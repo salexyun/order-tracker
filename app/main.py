@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from opentelemetry.trace import Status, StatusCode
 from pydantic import BaseModel, Field
 
 from app import telemetry
@@ -105,7 +106,10 @@ def list_orders():
 
 @app.get("/api/orders/{order_id}")
 def get_order(order_id: str):
-    with tracer.start_as_current_span("order.lookup") as span:
+    # A missing order (404) is a normal outcome, so only unexpected exceptions mark the span as failed.
+    with tracer.start_as_current_span(
+        "order.lookup", record_exception=False, set_status_on_exception=False,
+    ) as span:
         span.set_attribute("order.id", order_id)
         with connect() as db:
             row = db.execute("SELECT * FROM orders WHERE id = ?", (order_id,)).fetchone()
@@ -117,7 +121,9 @@ def get_order(order_id: str):
         span.set_attribute("order.priority", row["priority"])
         try:
             order = order_detail(row)
-        except Exception:
+        except Exception as exc:
+            span.record_exception(exc)
+            span.set_status(Status(StatusCode.ERROR, type(exc).__name__))
             # Customer name and item are deliberately left out of telemetry.
             logger.exception(
                 "order lookup failed",

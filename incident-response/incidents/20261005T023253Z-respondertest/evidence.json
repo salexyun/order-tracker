@@ -1,0 +1,117 @@
+{
+  "collected_at": "2026-10-05T02:32:53.787596+00:00",
+  "window": "last 15m",
+  "endpoint": null,
+  "metrics": {
+    "requests_by_route_status_15m": [
+      {
+        "labels": {
+          "http_request_method": "GET",
+          "http_response_status_code": "200",
+          "http_route": "/healthz"
+        },
+        "value": "80.51405475354812"
+      },
+      {
+        "labels": {
+          "http_request_method": "GET",
+          "http_response_status_code": "404",
+          "http_route": "/api/orders/{order_id}"
+        },
+        "value": "1.0134151719340303"
+      }
+    ],
+    "server_errors_total_by_route": []
+  },
+  "logs": {
+    "query": "{service_name=\"order-tracker\"} | severity_text=~\"ERROR|CRITICAL|FATAL\"",
+    "entries": []
+  },
+  "traces": {
+    "query": "{resource.service.name=\"order-tracker\" && status=error}",
+    "traces": [
+      {
+        "trace_id": "bd27a5ae758bf0342a5afb1c1df1c65c",
+        "root": "GET /api/orders/{order_id}",
+        "spans": [
+          {
+            "name": "order.lookup",
+            "status": {
+              "message": "HTTPException: 404: Order not found",
+              "code": "STATUS_CODE_ERROR"
+            },
+            "attributes": {
+              "order.id": "standard-1002",
+              "order.found": false
+            },
+            "events": [
+              {
+                "name": "exception",
+                "attributes": {
+                  "exception.type": "fastapi.exceptions.HTTPException",
+                  "exception.message": "404: Order not found",
+                  "exception.stacktrace": "Traceback (most recent call last):\n  File \"/app/.venv/lib/python3.12/site-packages/opentelemetry/trace/__init__.py\", line 602, in use_span\n    yield span\n  File \"/app/.venv/lib/python3.12/site-packages/opentelemetry/sdk/trace/__init__.py\", line 1136, in start_as_current_span\n    yield span\n  File \"/app/.venv/lib/python3.12/site-packages/opentelemetry/trace/__init__.py\", line 441, in start_as_current_span\n    yield span\n  File \"/app/app/main.py\", line 115, in get_order\n    raise HTTPException(404, \"Order not found\")\nfastapi.exceptions.HTTPException: 404: Order not found\n",
+                  "exception.escaped": "False"
+                }
+              }
+            ]
+          },
+          {
+            "name": "GET /api/orders/{order_id}",
+            "status": {},
+            "attributes": {
+              "http.request.method": "GET",
+              "http.route": "/api/orders/{order_id}",
+              "http.response.status_code": "404"
+            },
+            "events": []
+          }
+        ]
+      },
+      {
+        "trace_id": "ae80ae23a6beb016c992752e932afa74",
+        "root": "GET /api/orders/{order_id}",
+        "spans": [
+          {
+            "name": "order.lookup",
+            "status": {
+              "message": "HTTPException: 404: Order not found",
+              "code": "STATUS_CODE_ERROR"
+            },
+            "attributes": {
+              "order.id": "standard-1002",
+              "order.found": false
+            },
+            "events": [
+              {
+                "name": "exception",
+                "attributes": {
+                  "exception.type": "fastapi.exceptions.HTTPException",
+                  "exception.message": "404: Order not found",
+                  "exception.stacktrace": "Traceback (most recent call last):\n  File \"/app/.venv/lib/python3.12/site-packages/opentelemetry/trace/__init__.py\", line 602, in use_span\n    yield span\n  File \"/app/.venv/lib/python3.12/site-packages/opentelemetry/sdk/trace/__init__.py\", line 1136, in start_as_current_span\n    yield span\n  File \"/app/.venv/lib/python3.12/site-packages/opentelemetry/trace/__init__.py\", line 441, in start_as_current_span\n    yield span\n  File \"/app/app/main.py\", line 115, in get_order\n    raise HTTPException(404, \"Order not found\")\nfastapi.exceptions.HTTPException: 404: Order not found\n",
+                  "exception.escaped": "False"
+                }
+              }
+            ]
+          },
+          {
+            "name": "GET /api/orders/{order_id}",
+            "status": {},
+            "attributes": {
+              "http.request.method": "GET",
+              "http.route": "/api/orders/{order_id}",
+              "http.response.status_code": "404"
+            },
+            "events": []
+          }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "git_head": "72be8a97e7f2c783a8de00ee636304c50add3f88 Add Grafana alert for 5xx responses",
+    "recent_commits": "72be8a9 2026-10-05 11:29:44 +0900 Add Grafana alert for 5xx responses\ndd427da 2026-10-05 11:27:29 +0900 Add telemetry pipeline: Collector, Prometheus, Loki, Tempo, Grafana\n7efc7f2 2026-10-05 11:24:09 +0900 Add OpenTelemetry metrics, traces, and logs for order lookups\n72de447 2026-09-25 18:46:35 +0200 Simplify local Compose startup\n9f61e92 2026-09-25 11:17:44 +0200 Add order tracker starter",
+    "working_tree": "M .dockerignore\n M app/main.py\n?? incident-response/",
+    "containers": "app order-tracker:local Up 8 seconds (healthy)\ngrafana grafana/grafana:11.5.2 Up 4 minutes (healthy)\nloki grafana/loki:3.4.2 Up 7 minutes\notel-collector otel/opentelemetry-collector-contrib:0.120.0 Up 7 minutes\nprometheus prom/prometheus:v3.2.1 Up 7 minutes\ntempo grafana/tempo:2.6.1 Up 7 minutes"
+  }
+}
