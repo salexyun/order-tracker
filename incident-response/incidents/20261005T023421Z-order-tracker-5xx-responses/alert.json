@@ -1,0 +1,63 @@
+{
+  "alert": {
+    "status": "firing",
+    "labels": {
+      "alertname": "Order Tracker 5xx responses",
+      "grafana_folder": "Order Tracker",
+      "http_request_method": "GET",
+      "http_route": "/api/orders/{order_id}",
+      "service": "order-tracker",
+      "severity": "page"
+    },
+    "annotations": {
+      "dashboard_url": "http://localhost:3000/d/order-tracker/order-tracker?from=now-30m&to=now",
+      "description": "1 server error(s) on GET /api/orders/{order_id} in the last 5m.",
+      "endpoint": "GET /api/orders/{order_id}",
+      "summary": "Order Tracker returned 5xx on GET /api/orders/{order_id}",
+      "window": "5m"
+    },
+    "startsAt": "2026-10-05T02:33:40Z",
+    "endsAt": "0001-01-01T00:00:00Z",
+    "generatorURL": "http://localhost:3000/alerting/grafana/order-tracker-5xx/view?orgId=1",
+    "fingerprint": "f934079282fef9a5",
+    "silenceURL": "http://localhost:3000/alerting/silence/new?alertmanager=grafana&matcher=alertname%3DOrder+Tracker+5xx+responses&matcher=grafana_folder%3DOrder+Tracker&matcher=http_request_method%3DGET&matcher=http_route%3D%2Fapi%2Forders%2F%7Border_id%7D&matcher=service%3Dorder-tracker&matcher=severity%3Dpage&orgId=1",
+    "dashboardURL": "http://localhost:3000/d/order-tracker?orgId=1",
+    "panelURL": "http://localhost:3000/d/order-tracker?orgId=1&viewPanel=6",
+    "values": {
+      "A": 1,
+      "C": 1
+    },
+    "valueString": "[ var='A' labels={http_request_method=GET, http_route=/api/orders/{order_id}} value=1 ], [ var='C' labels={http_request_method=GET, http_route=/api/orders/{order_id}} value=1 ]"
+  },
+  "group": {
+    "receiver": "incident-responder",
+    "status": "firing",
+    "groupLabels": {
+      "alertname": "Order Tracker 5xx responses",
+      "http_route": "/api/orders/{order_id}"
+    },
+    "commonLabels": {
+      "alertname": "Order Tracker 5xx responses",
+      "grafana_folder": "Order Tracker",
+      "http_request_method": "GET",
+      "http_route": "/api/orders/{order_id}",
+      "service": "order-tracker",
+      "severity": "page"
+    },
+    "commonAnnotations": {
+      "dashboard_url": "http://localhost:3000/d/order-tracker/order-tracker?from=now-30m&to=now",
+      "description": "1 server error(s) on GET /api/orders/{order_id} in the last 5m.",
+      "endpoint": "GET /api/orders/{order_id}",
+      "summary": "Order Tracker returned 5xx on GET /api/orders/{order_id}",
+      "window": "5m"
+    },
+    "externalURL": "http://localhost:3000/",
+    "version": "1",
+    "groupKey": "{}:{alertname=\"Order Tracker 5xx responses\", http_route=\"/api/orders/{order_id}\"}",
+    "truncatedAlerts": 0,
+    "orgId": 1,
+    "title": "[FIRING:1] Order Tracker 5xx responses /api/orders/{order_id} (Order Tracker GET order-tracker page)",
+    "state": "alerting",
+    "message": "**Firing**\n\nValue: A=1, C=1\nLabels:\n - alertname = Order Tracker 5xx responses\n - grafana_folder = Order Tracker\n - http_request_method = GET\n - http_route = /api/orders/{order_id}\n - service = order-tracker\n - severity = page\nAnnotations:\n - dashboard_url = http://localhost:3000/d/order-tracker/order-tracker?from=now-30m&to=now\n - description = 1 server error(s) on GET /api/orders/{order_id} in the last 5m.\n - endpoint = GET /api/orders/{order_id}\n - summary = Order Tracker returned 5xx on GET /api/orders/{order_id}\n - window = 5m\nSource: http://localhost:3000/alerting/grafana/order-tracker-5xx/view?orgId=1\nSilence: http://localhost:3000/alerting/silence/new?alertmanager=grafana&matcher=alertname%3DOrder+Tracker+5xx+responses&matcher=grafana_folder%3DOrder+Tracker&matcher=http_request_method%3DGET&matcher=http_route%3D%2Fapi%2Forders%2F%7Border_id%7D&matcher=service%3Dorder-tracker&matcher=severity%3Dpage&orgId=1\nDashboard: http://localhost:3000/d/order-tracker?orgId=1\nPanel: http://localhost:3000/d/order-tracker?orgId=1&viewPanel=6\n"
+  }
+}
