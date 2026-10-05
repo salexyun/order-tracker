@@ -1,5 +1,8 @@
 name: order-tracker
 
+include:
+  - observability/compose.yaml
+
 services:
   app:
     image: order-tracker:${ORDER_TRACKER_TAG:-local}
@@ -8,8 +11,13 @@ services:
       - "127.0.0.1:${ORDER_TRACKER_PORT:-8000}:8000"
     environment:
       ORDER_DB_PATH: /data/orders.db
+      OTEL_EXPORTERS: ${OTEL_EXPORTERS:-otlp}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_METRIC_EXPORT_INTERVAL: "5000"
+      APP_VERSION: ${ORDER_TRACKER_TAG:-local}
     volumes:
       - orders:/data
+    depends_on: [otel-collector]
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3)"]
